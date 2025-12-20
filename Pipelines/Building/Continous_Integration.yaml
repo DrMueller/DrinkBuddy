@@ -1,0 +1,81 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+
+variables:
+  BuildConfiguration: "Release"
+  TerraformPath: "Pipelines/Releasing/Terraform"
+
+jobs:
+  - job: "BuildAndTest"
+    displayName: "Build and test"
+    pool:
+      name: Azure Pipelines
+      vmImage: windows-latest
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: "Restore"
+        inputs:
+          command: restore
+          projects: "Sources/**/*.csproj"
+      - task: DotNetCoreCLI@2
+        displayName: "Build with warnings as errors"
+        inputs:
+          projects: "Sources/**/*.csproj"
+          arguments: '/p:TreatWarningsAsErrors="true" --configuration $(BuildConfiguration)'
+      - task: DotNetCoreCLI@2
+        displayName: Run Tests
+        inputs:
+          command: test
+          projects: "**/JassApp.sln"
+          arguments: "--configuration $(BuildConfiguration)"
+      - task: petersendev.dotnet-global-tool-installer.DotnetGlobalToolInstaller.DotnetGlobalToolInstaller@0
+        displayName: '.NET Core Global Tool'
+        inputs:
+          name: nugetlicencebuddy
+      - script: 'nugetlicencebuddy -i -s Sources'
+        displayName: 'Run Licence Buddy'
+        
+
+  - job: "RunResharper"
+    displayName: "Run ReSharper analysis"
+    pool:
+      name: Azure Pipelines
+      vmImage: windows-latest
+    steps:
+    - task: petersendev.dotnet-global-tool-installer.DotnetGlobalToolInstaller.DotnetGlobalToolInstaller@0
+      displayName: '.NET Core Global Tool'
+      inputs:
+        name: jetbrains.resharper.globaltools
+
+    - task: DrMueller2.ReSharperRunner.ReSharperRunnerTask.ReSharperRunnerTask@2
+      displayName: Run ReSharper analysis
+      inputs:
+        solutionPath: JassApp.sln
+
+  - job: "VerifyTerraform"
+    displayName: "Verify Terraform"
+    pool:
+      name: Azure Pipelines
+      vmImage: windows-latest
+    steps:
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: "Install Terraform dependencies"
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+      displayName: "Terraform init"
+      inputs:
+        workingDirectory: $(TerraformPath)
+        backendServiceArm: TerraformConnection
+        backendAzureRmResourceGroupName: TeraformStuff
+        backendAzureRmStorageAccountName: terraformstuffblob
+        backendAzureRmContainerName: terraformstuffblobcontainer
+        backendAzureRmKey: tf/terraform.tfstate
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+      displayName: "Terraform validate"
+      inputs:
+        command: validate
+        workingDirectory: $(TerraformPath)

@@ -1,0 +1,62 @@
+name: 1.0$(rev:.r) # build numbering format
+
+trigger: none # will disable CI builds entirely
+
+resources:
+  pipelines:
+  - pipeline: ca-pip  # Name of the pipeline resource
+    source: 01-JassApp-Continous-Integration # Name of the pipeline referenced by the pipeline resource
+    trigger: true
+
+variables:
+  BuildConfiguration: 'Release'
+  PublishPath: '$(Build.ArtifactStagingDirectory)/App'
+  TerraformPath: "Pipelines/Releasing/Terraform"
+
+
+jobs:
+- job: 'BuildAndPublishAsArtifact'
+  displayName: 'Build and save zipped Artifact'
+  pool:
+    name: Azure Pipelines
+    vmImage: windows-latest
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: restore
+      projects: 'Sources/**/*.csproj'
+
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@5
+    displayName: "Replace tokens in appsettings.json"
+    inputs:
+      rootDirectory: "$(Build.Repository.LocalPath)"
+      targetFiles: |
+        **/appsettings.json
+      tokenPattern: rm
+      verbosity: detailed
+      keepToken: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish Blazor
+    inputs:
+      command: publish
+
+      publishWebProjects: false
+
+      projects: 'Sources/Application/JassApp.csproj'
+
+      arguments: '--configuration $(BuildConfiguration) --output $(PublishPath) /p:DeleteExistingFiles=True'
+
+      zipAfterPublish: true
+
+      modifyOutputPath: false
+  - task: CopyFiles@2
+    displayName: "Copy Terraform files"
+    inputs:
+      SourceFolder: $(TerraformPath)
+      TargetFolder: $(PublishPath)/Terraform
+  - task: PublishBuildArtifacts@1
+    displayName: 'Save Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'

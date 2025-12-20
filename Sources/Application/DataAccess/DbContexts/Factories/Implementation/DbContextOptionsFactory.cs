@@ -1,0 +1,25 @@
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
+namespace DrinkBuddy.DataAccess.DbContexts.Factories.Implementation
+{
+    [UsedImplicitly]
+    public class DbContextOptionsFactory : IDbContextOptionsFactory
+    {
+        public DbContextOptions CreateForSqlServer(string connectionString)
+        {
+            var configuration = SqlServerConventionSetBuilder.Build();
+            var mb = new ModelBuilder(configuration);
+            mb.ApplyConfigurationsFromAssembly(typeof(AppDbContextFactory).Assembly);
+
+            return new DbContextOptionsBuilder()
+                .UseSqlServer(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .AddInterceptors(new CommandInterceptor())
+                .UseModel(mb.FinalizeModel())
+                .Options;
+        }
+    }
+}

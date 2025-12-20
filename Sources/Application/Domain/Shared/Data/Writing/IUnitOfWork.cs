@@ -1,0 +1,10 @@
+﻿namespace DrinkBuddy.Domain.Shared.Data.Writing
+{
+    public interface IUnitOfWork : IDisposable
+    {
+        TRepo GetRepository<TRepo>()
+            where TRepo : IRepository;
+
+        Task CommitAsync();
+    }
+}
