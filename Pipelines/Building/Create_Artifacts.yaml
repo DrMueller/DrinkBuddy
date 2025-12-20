@@ -5,14 +5,13 @@ trigger: none # will disable CI builds entirely
 resources:
   pipelines:
   - pipeline: ca-pip  # Name of the pipeline resource
-    source: 01-JassApp-Continous-Integration # Name of the pipeline referenced by the pipeline resource
+    source: 01-DrinkBuddy-Continous-Integration # Name of the pipeline referenced by the pipeline resource
     trigger: true
 
 variables:
   BuildConfiguration: 'Release'
   PublishPath: '$(Build.ArtifactStagingDirectory)/App'
   TerraformPath: "Pipelines/Releasing/Terraform"
-
 
 jobs:
 - job: 'BuildAndPublishAsArtifact'
@@ -44,7 +43,7 @@ jobs:
 
       publishWebProjects: false
 
-      projects: 'Sources/Application/JassApp.csproj'
+      projects: 'Sources/Application/DrinkBuddy.csproj'
 
       arguments: '--configuration $(BuildConfiguration) --output $(PublishPath) /p:DeleteExistingFiles=True'
 
