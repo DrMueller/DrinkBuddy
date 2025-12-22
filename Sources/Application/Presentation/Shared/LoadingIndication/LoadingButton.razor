@@ -1,0 +1,18 @@
+﻿@using MudBlazor
+<MudButton Variant="Variant.Filled"
+           Color="Color.Primary"
+           ButtonType="@ButtonType"
+           Class="@Class"
+           Disabled="IsLoading"
+           OnClick="OnClick">
+    @if (IsLoading)
+    {
+        <MudProgressCircular Size="Size.Medium"
+                             Indeterminate
+                             Color="Color.Inherit"/>
+    }
+    else
+    {
+        <MudIcon Icon="@Icon"/>
+    }
+</MudButton>

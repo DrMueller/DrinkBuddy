@@ -47,29 +47,13 @@ namespace DrinkBuddy.Presentation.Areas.Profile.Services.Implementation
 
         public async Task<InformationEntries> SaveAsync(ProfilEditViewModel editModel)
         {
-            Profil? profil = null;
-
-            if (editModel.Id > 0)
-            {
-                profil = await queryService
-                    .QuerySingleAsync(new ProfilSpec(ProfilId.Create(editModel.Id)));
-
-                profil.Name = editModel.Name;
-                profil.Beschreibung = editModel.Beschreibung;
-            }
-            else
-            {
-                profil = new Profil(
-                    ProfilId.Create(0),
-                    editModel.Name,
-                    editModel.Beschreibung,
-                    []);
-            }
-
+            var profil = await LoadProfilAsync(ProfilId.Create(editModel.Id));
             var favoriten = editModel.FavorisierteDrinks
                 .Select(fd => new FavorisierterDrink(fd))
                 .ToList();
 
+            profil.Name = editModel.Name ?? string.Empty;
+            profil.Beschreibung = editModel.Beschreibung ?? string.Empty;
             profil.AlignFavoriten(favoriten);
 
             using var uow = uowFactory.Create();
@@ -79,6 +63,17 @@ namespace DrinkBuddy.Presentation.Areas.Profile.Services.Implementation
             await uow.CommitAsync();
 
             return InformationEntries.Empty;
+        }
+
+        private async Task<Profil> LoadProfilAsync(ProfilId profilId)
+        {
+            if (profilId.Value > 0)
+            {
+                return await queryService
+                    .QuerySingleAsync(new ProfilSpec(profilId));
+            }
+
+            return Profil.CreateEmpty();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DrinkBuddy.Domain.Shared.Data.Tables.Base
 {
-    [PublicAPI]
+    [PublicAPI("EF Core")]
     public class TableBase
     {
         public int Id { get; set; }

@@ -11,7 +11,7 @@ namespace DrinkBuddy.Presentation.Areas.Profile.Components
         [MinLength(1)]
         public IList<string> FavorisierteDrinks { get; set; } = new List<string>();
 
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Required]
         public string? Name { get; set; }

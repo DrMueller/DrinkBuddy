@@ -2,11 +2,13 @@
 using DrinkBuddy.Common.Settings.Provisioning.Services;
 using DrinkBuddy.Domain.Areas.DrinkVorschlag.Models;
 using DrinkBuddy.Domain.Integrations.SemKer;
+using JetBrains.Annotations;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace DrinkBuddy.Integrations.SemKer
 {
+    [UsedImplicitly]
     public class SemKerClient(ISettingsProvider settingsProvider) : ISemKerClient
     {
         public async Task<string> SendAsync(DrinkRequest request)
@@ -18,14 +20,14 @@ namespace DrinkBuddy.Integrations.SemKer
                 settingsProvider.AppSettings.OpenAiDeploymentName,
                 settingsProvider.AppSettings.OpenAiEndpoint,
                 settingsProvider.AppSettings.OpenAiKey,
-                settingsProvider.AppSettings.OpenAiModelId);
+                modelId: settingsProvider.AppSettings.OpenAiModelId);
 
             var kernel = kernelBuilder.Build();
             var chatService = kernel.Services.GetRequiredService<IChatCompletionService>();
-
             var reply = await chatService.GetChatMessageContentsAsync(chat);
 
             var result = reply.Aggregate(new StringBuilder(), (sb, msg) => sb.AppendLine(msg.Content)).ToString();
+            result = result.Replace("```", string.Empty);
 
             return result;
         }
@@ -45,7 +47,7 @@ namespace DrinkBuddy.Integrations.SemKer
             chat.AddUserMessage($"Profil-Beschreibung: {request.Profil.Beschreibung}");
             chat.AddUserMessage($"Profil-Drinkfavoriten: {request.Profil.FavoriiserteDrinksBeschreibung}");
             chat.AddUserMessage($"Situation: {request.Situation}");
-            chat.AddUserMessage($"Spezialwünsche: {request.SpezialWünsche}");
+            chat.AddUserMessage($"Spezialwünsche: {request.SpezialWuensche}");
 
             return chat;
         }

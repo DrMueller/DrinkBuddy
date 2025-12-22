@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DrinkBuddy.Domain.Areas.Profile.Models
+﻿namespace DrinkBuddy.Domain.Areas.Profile.Models
 {
     public record ProfilId(int Value)
     {
@@ -10,28 +8,26 @@ namespace DrinkBuddy.Domain.Areas.Profile.Models
         }
     }
 
-    public class Profil : IEquatable<Profil>
+    public class Profil(
+        ProfilId id,
+        string name,
+        string beschreibung,
+        IReadOnlyCollection<FavorisierterDrink> favorisierteDrinks)
+        : IEquatable<Profil>
     {
-        private IList<FavorisierterDrink> _favorisierteDrinks = new List<FavorisierterDrink>();
+        private IList<FavorisierterDrink> _favorisierteDrinks = favorisierteDrinks.ToList();
 
-        public Profil(
-            ProfilId id,
-            string name,
-            string beschreibung,
-            IReadOnlyCollection<FavorisierterDrink> favorisierteDrinks)
-        {
-            Id = id;
-            Name = name;
-            Beschreibung = beschreibung;
-            _favorisierteDrinks = favorisierteDrinks.ToList();
-        }
+        public string Beschreibung { get; set; } = beschreibung;
 
         public string FavoriiserteDrinksBeschreibung => string.Join(", ", _favorisierteDrinks.Select(d => d.Name));
-
-        public string Beschreibung { get; set; }
         public IReadOnlyCollection<FavorisierterDrink> FavorisierteDrinks => _favorisierteDrinks.AsReadOnly();
-        public ProfilId Id { get; }
-        public string Name { get; set; }
+        public ProfilId Id { get; } = id;
+        public string Name { get; set; } = name;
+
+        public static Profil CreateEmpty()
+        {
+            return new Profil(ProfilId.Create(0), string.Empty, string.Empty, []);
+        }
 
         public void AlignFavoriten(IReadOnlyCollection<FavorisierterDrink> drinks)
         {

@@ -1,31 +1,35 @@
 ﻿@using DrinkBuddy.Domain.Areas.Profile.Models
 @using DrinkBuddy.Presentation.Shared.LoadingIndication
+@using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
 @attribute [Route(Path)]
 
 <LoadingIndicator IsLoading="IsLoading">
-    <MudPaper Class="pa-4">
-        <MudCard>
-            <MudForm Model="@EditModel" ValidationDelay="0">
-                <MudSelect @bind-Value="EditModel.SelectedProfil"
-                           Variant="Variant.Filled"
-                           FitContent="true"
-                           Clearable="true">
-                    @foreach (var profil in Profile!)
-                    {
-                        <MudSelectItem T="Profil" Value="@profil">@profil.Name</MudSelectItem>
-                    }
-                </MudSelect>
-                <MudTextField @bind-Value="EditModel!.Situation"
-                              Immediate="true"
-                              Label="Name"/>
-                <MudTextField @bind-Value="EditModel!.SpezialWuensche"
-                              Label="Beschreibung"
-                              Lines="5"/>
-            </MudForm>
-            <MudCardActions>
-                <MudButton Variant="Variant.Outlined" Class="mx-2" OnClick="CreateVorschlagAsync">Go!</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudPaper>
+    <EditForm Model="@EditModel" OnValidSubmit="CreateVorschlagAsync">
+        <DataAnnotationsValidator/>
+        <MudPaper Class="pa-4">
+            <MudCard>
+                <MudCardContent>
+                    <MudSelect @bind-Value="EditModel.SelectedProfil"
+                               Variant="Variant.Filled"
+                               FitContent="true"
+                               Clearable="true">
+                        @foreach (var profil in Profile!)
+                        {
+                            <MudSelectItem T="Profil" Value="@profil">@profil.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudTextField @bind-Value="EditModel.Situation"
+                                  Lines="5"
+                                  Immediate="true"
+                                  Label="Sitation"/>
+                    <MudTextField @bind-Value="EditModel.SpezialWuensche"
+                                  Label="Spezialwünsche"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <LoadingButton IsLoading="IsCalculating" ButtonType="ButtonType.Submit" Icon="@Icons.Material.Filled.LocalDrink" Class="mx-2"/>
+                </MudCardActions>
+            </MudCard>
+        </MudPaper>
+    </EditForm>
 </LoadingIndicator>

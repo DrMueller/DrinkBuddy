@@ -1,27 +1,33 @@
 ﻿@using DrinkBuddy.Presentation.Shared.LoadingIndication
 @using DrinkBuddy.Presentation.Shared.Multitext
+@using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
 @attribute [Route(Path)]
 
 <LoadingIndicator IsLoading="IsLoading">
-    <MudPaper Class="pa-4">
-        <MudCard>
-            <MudForm Model="@EditModel" ValidationDelay="0">
-                <MudTextField @bind-Value="EditModel!.Name"
-                              Immediate="true"
-                              Label="Name"/>
+    <EditForm Model="@EditModel" OnValidSubmit="SaveAsync">
+        <DataAnnotationsValidator/>
+        <MudPaper Class="pa-4">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField @bind-Value="EditModel!.Name"
+                                  For="@(() => EditModel!.Name)"
+                                  Immediate="true"
+                                  Label="Name"/>
 
-                <MudTextField @bind-Value="EditModel!.Beschreibung"
-                              Label="Beschreibung"
-                              Lines="5"/>
+                    <MudTextField @bind-Value="EditModel!.Beschreibung"
+                                  For="@(() => EditModel!.Beschreibung)"
+                                  Label="Beschreibung"
+                                  Lines="5"/>
 
-                <MultitextSelect @bind-Values="@EditModel!.FavorisierteDrinks"></MultitextSelect>
+                    <MultitextSelect @bind-Values="@EditModel!.FavorisierteDrinks"></MultitextSelect>
+                </MudCardContent>
 
-            </MudForm>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="SaveAsync">Save</MudButton>
-                <MudButton Variant="Variant.Outlined" Class="mx-2" OnClick="Cancel">Cancel</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudPaper>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+                    <MudButton Variant="Variant.Outlined" Class="mx-2" OnClick="Cancel">Cancel</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudPaper>
+    </EditForm>
 </LoadingIndicator>

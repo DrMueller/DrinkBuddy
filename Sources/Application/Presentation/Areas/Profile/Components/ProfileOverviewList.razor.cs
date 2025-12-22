@@ -1,5 +1,4 @@
-﻿using DrinkBuddy.Common.InformationHandling;
-using DrinkBuddy.Domain.Areas.Profile.Models;
+﻿using DrinkBuddy.Domain.Areas.Profile.Models;
 using DrinkBuddy.Domain.Areas.Profile.Specifications;
 using DrinkBuddy.Domain.Shared.Data.Querying;
 using DrinkBuddy.Presentation.Areas.Profile.Services;

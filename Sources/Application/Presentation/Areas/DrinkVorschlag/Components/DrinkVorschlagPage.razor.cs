@@ -25,6 +25,7 @@ namespace DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
         private bool IsLoading => Profile == null;
 
         private IReadOnlyCollection<Profil>? Profile { get; set; }
+        public bool IsCalculating { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,16 +34,20 @@ namespace DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
 
         private async Task CreateVorschlagAsync()
         {
+            IsCalculating = true;
+
             var drink = await DrinkVorschlagService.CreateVorschlagAsync(
-                ProfilId.Create(EditModel.SelectedProfil.Id.Value),
-                EditModel.Situation,
-                EditModel.SpezialWuensche);
+                ProfilId.Create(EditModel.SelectedProfil!.Id.Value),
+                EditModel.Situation ?? string.Empty,
+                EditModel.SpezialWuensche ?? string.Empty);
 
             var options = new DialogOptions
             {
                 FullWidth = true,
                 MaxWidth = MaxWidth.Medium
             };
+
+            IsCalculating = false;
 
             var parameters = new DialogParameters<DrinkVorschlagDialog> { { x => x.Text, drink } };
             await DialogService.ShowAsync<DrinkVorschlagDialog>("Drinks!", parameters, options);
