@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using DrinkBuddy.Common.Extensions;
-using DrinkBuddy.Data.Base;
 using DrinkBuddy.DataAccess.DbContexts.Contexts;
+using DrinkBuddy.Domain.Shared.Data.Tables.Base;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,6 +101,17 @@ namespace DrinkBuddy.DataAccess.Repositories.Base
             where T : TableBase
         {
             _dbContext.DbSet<T>().Remove(entity);
+        }
+
+        protected async Task RemoveAsync<T>(int id)
+            where T : TableBase
+        {
+            var tableEntry = await _dbContext.FindAsync<T>(id);
+
+            if (tableEntry != null)
+            {
+                _dbContext.DbSet<T>().Remove(tableEntry);
+            }
         }
 
         protected void RemoveRange<T>(ICollection<T> entities)

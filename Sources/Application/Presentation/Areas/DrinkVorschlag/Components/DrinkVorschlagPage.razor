@@ -1,0 +1,31 @@
+﻿@using DrinkBuddy.Domain.Areas.Profile.Models
+@using DrinkBuddy.Presentation.Shared.LoadingIndication
+@using MudBlazor
+@attribute [Route(Path)]
+
+<LoadingIndicator IsLoading="IsLoading">
+    <MudPaper Class="pa-4">
+        <MudCard>
+            <MudForm Model="@EditModel" ValidationDelay="0">
+                <MudSelect @bind-Value="EditModel.SelectedProfil"
+                           Variant="Variant.Filled"
+                           FitContent="true"
+                           Clearable="true">
+                    @foreach (var profil in Profile!)
+                    {
+                        <MudSelectItem T="Profil" Value="@profil">@profil.Name</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudTextField @bind-Value="EditModel!.Situation"
+                              Immediate="true"
+                              Label="Name"/>
+                <MudTextField @bind-Value="EditModel!.SpezialWuensche"
+                              Label="Beschreibung"
+                              Lines="5"/>
+            </MudForm>
+            <MudCardActions>
+                <MudButton Variant="Variant.Outlined" Class="mx-2" OnClick="CreateVorschlagAsync">Go!</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudPaper>
+</LoadingIndicator>

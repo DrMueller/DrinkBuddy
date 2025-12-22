@@ -1,0 +1,35 @@
+﻿@using DrinkBuddy.Domain.Areas.Profile.Models
+@using DrinkBuddy.Presentation.Shared.Infos
+@using DrinkBuddy.Presentation.Shared.LoadingIndication
+@using MudBlazor
+<LoadingIndicator IsLoading="IsLoading">
+    <MudTable Items="Profile" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel SortBy="new Func<Profil, object>(x => x.Id.Value)">Id</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Profil, object>(x => x.Name)">Name</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id.Value</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Name">
+                <MudButton Size="Size.Small" OnClick="() => EditProfil(context.Id)" Color="Color.Primary" Variant="Variant.Filled">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit"/>
+                </MudButton>
+
+                <MudButton Size="Size.Small" OnClick="() => DeleteProfilAsync(context.Id)" Color="Color.Primary"
+                           Variant="Variant.Filled">
+                    <MudIcon Icon="@Icons.Material.Filled.Delete"/>
+                </MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new[] { 50, 100 }"/>
+        </PagerContent>
+    </MudTable>
+</LoadingIndicator>

@@ -9,5 +9,10 @@ namespace DrinkBuddy.Common.Settings.Provisioning.Models
         public string ConnectionString { get; set; } = null!;
         public string AppVersion { get; set; } = null!;
         public string GitHubCommit { get; set; } = null!;
+
+        public required string OpenAiEndpoint { get; set; }
+        public required string OpenAiKey { get; set; }
+        public required string OpenAiDeploymentName { get; set; }
+        public required string OpenAiModelId { get; set; }
     }
 }

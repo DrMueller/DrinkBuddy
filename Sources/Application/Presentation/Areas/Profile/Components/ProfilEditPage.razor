@@ -1,0 +1,27 @@
+﻿@using DrinkBuddy.Presentation.Shared.LoadingIndication
+@using DrinkBuddy.Presentation.Shared.Multitext
+@using MudBlazor
+@attribute [Route(Path)]
+
+<LoadingIndicator IsLoading="IsLoading">
+    <MudPaper Class="pa-4">
+        <MudCard>
+            <MudForm Model="@EditModel" ValidationDelay="0">
+                <MudTextField @bind-Value="EditModel!.Name"
+                              Immediate="true"
+                              Label="Name"/>
+
+                <MudTextField @bind-Value="EditModel!.Beschreibung"
+                              Label="Beschreibung"
+                              Lines="5"/>
+
+                <MultitextSelect @bind-Values="@EditModel!.FavorisierteDrinks"></MultitextSelect>
+
+            </MudForm>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="SaveAsync">Save</MudButton>
+                <MudButton Variant="Variant.Outlined" Class="mx-2" OnClick="Cancel">Cancel</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudPaper>
+</LoadingIndicator>

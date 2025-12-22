@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace DrinkBuddy.Data.Base
+namespace DrinkBuddy.Domain.Shared.Data.Tables.Base
 {
     [PublicAPI]
     public class TableBase

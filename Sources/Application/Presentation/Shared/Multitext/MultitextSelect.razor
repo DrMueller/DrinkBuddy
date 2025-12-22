@@ -1,0 +1,27 @@
+﻿@using MudBlazor
+@foreach (var val in Values)
+{
+    <div class="row m-2">
+        <div class="col-3">
+            <div>
+                <label class="form-check-label mb-2">@val</label>
+
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="() => DeleteAsync(val)">
+                    <MudIcon
+                        Color="Color.Primary" Icon="@Icons.Material.Filled.Delete"/>
+                </MudButton>
+            </div>
+        </div>
+    </div>
+}
+
+<MudStack Direction="Row" AlignItems="AlignItems.Start" Spacing="1">
+    <MudTextField @bind-Value="@InputValue"
+                  Label="Drink" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Secondary"
+               OnClick="AddAsync">
+        <MudIcon Icon="@Icons.Material.Filled.Add" />
+    </MudButton>
+</MudStack>

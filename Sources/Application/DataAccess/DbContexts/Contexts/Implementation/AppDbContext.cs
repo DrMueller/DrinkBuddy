@@ -1,4 +1,4 @@
-﻿using DrinkBuddy.Data.Base;
+﻿using DrinkBuddy.Domain.Shared.Data.Tables.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DrinkBuddy.DataAccess.DbContexts.Contexts.Implementation
@@ -8,7 +8,6 @@ namespace DrinkBuddy.DataAccess.DbContexts.Contexts.Implementation
         public IDbSetProxy<TTable> DbSet<TTable>() where TTable : TableBase
         {
             var set = Set<TTable>();
-
             return new DbSetProxy<TTable>(set);
         }
 

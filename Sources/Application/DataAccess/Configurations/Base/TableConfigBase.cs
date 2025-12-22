@@ -1,4 +1,4 @@
-﻿using DrinkBuddy.Data.Base;
+﻿using DrinkBuddy.Domain.Shared.Data.Tables.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

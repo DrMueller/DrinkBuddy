@@ -1,5 +1,5 @@
-﻿using DrinkBuddy.Data;
-using DrinkBuddy.DataAccess.Configurations.Base;
+﻿using DrinkBuddy.DataAccess.Configurations.Base;
+using DrinkBuddy.Domain.Shared.Data.Tables;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DrinkBuddy.DataAccess.Configurations
@@ -9,6 +9,7 @@ namespace DrinkBuddy.DataAccess.Configurations
         protected override void ConfigureEntity(EntityTypeBuilder<ProfilTable> builder)
         {
             builder.Property(f => f.Name).HasMaxLength(20);
+            builder.Property(f => f.Beschreibung).HasMaxLength(255);
         }
     }
 }

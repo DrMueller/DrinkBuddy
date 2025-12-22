@@ -1,4 +1,4 @@
-﻿using DrinkBuddy.Data.Base;
+﻿using DrinkBuddy.Domain.Shared.Data.Tables.Base;
 
 namespace DrinkBuddy.Domain.Shared.Data.Querying
 {

@@ -1,9 +1,8 @@
-﻿
+﻿@using DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
+@using DrinkBuddy.Presentation.Areas.Profile.Components
 @using MudBlazor
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-@*     <MudNavLink Href="@SpielerOverviewPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Spieler</MudNavLink>
-    <MudNavLink Href="@SpielerHistoryPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.History">History</MudNavLink>
-    <MudNavLink Href="@CoiffeurOverviewPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddShoppingCart">Coiffeur</MudNavLink>
-    <MudNavLink Href="@JassSpielSimulatorPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Science">Statistiken</MudNavLink> *@
+    <MudNavLink Href="@ProfileOverviewPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Approval">Profile</MudNavLink>
+    <MudNavLink Href="@DrinkVorschlagPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalDrink">Drinks</MudNavLink>
 </MudNavMenu>

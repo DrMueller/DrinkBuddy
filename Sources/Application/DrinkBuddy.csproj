@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\**" />
+    <Compile Remove="Presentation\Areas\DrinkVorschlag\NewFolder\**" />
+    <Content Remove="Application\**" />
+    <Content Remove="Presentation\Areas\DrinkVorschlag\NewFolder\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="Presentation\Areas\DrinkVorschlag\NewFolder\**" />
+    <None Remove="Application\**" />
+    <None Remove="Presentation\Areas\DrinkVorschlag\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageReference Include="Lamar" Version="15.0.1" />
     <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="15.0.1" />
