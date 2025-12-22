@@ -9,6 +9,7 @@ trigger:
 variables:
   BuildConfiguration: "Release"
   TerraformPath: "Pipelines/Releasing/Terraform"
+  SolutionName: "DrinkBuddy.sln"
 
 jobs:
   - job: "BuildAndTest"
@@ -31,7 +32,7 @@ jobs:
         displayName: Run Tests
         inputs:
           command: test
-          projects: "**/JassApp.sln"
+          projects: "**/$(SolutionName)"
           arguments: "--configuration $(BuildConfiguration)"
       - task: petersendev.dotnet-global-tool-installer.DotnetGlobalToolInstaller.DotnetGlobalToolInstaller@0
         displayName: '.NET Core Global Tool'
@@ -55,7 +56,7 @@ jobs:
     - task: DrMueller2.ReSharperRunner.ReSharperRunnerTask.ReSharperRunnerTask@2
       displayName: Run ReSharper analysis
       inputs:
-        solutionPath: JassApp.sln
+        solutionPath: $(SolutionName)
 
   - job: "VerifyTerraform"
     displayName: "Verify Terraform"
