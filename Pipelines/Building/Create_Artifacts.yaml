@@ -10,7 +10,7 @@ resources:
 
 variables:
   BuildConfiguration: 'Release'
-  PublishPath: '$(Build.ArtifactStagingDirectory)/App'
+  PublishPath: '$(Build.ArtifactStagingDirectory)'
   TerraformPath: "Pipelines/Releasing/Terraform"
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
 
       projects: 'Sources/Application/DrinkBuddy.csproj'
 
-      arguments: '--configuration $(BuildConfiguration) --output $(PublishPath) /p:DeleteExistingFiles=True'
+      arguments: '--configuration $(BuildConfiguration) --output $(PublishPath)/App /p:DeleteExistingFiles=True'
 
       zipAfterPublish: true
 
