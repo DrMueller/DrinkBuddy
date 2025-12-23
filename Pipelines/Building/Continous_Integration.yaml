@@ -70,7 +70,7 @@ jobs:
       displayName: "Terraform init"
       inputs:
         workingDirectory: $(TerraformPath)
-        backendServiceArm: TerraformConnection
+        backendServiceArm: TerraformConnection2
         backendAzureRmResourceGroupName: TeraformStuff
         backendAzureRmStorageAccountName: terraformstuffblob
         backendAzureRmContainerName: terraformstuffblobcontainer

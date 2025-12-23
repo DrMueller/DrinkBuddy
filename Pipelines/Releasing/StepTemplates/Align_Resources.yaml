@@ -13,7 +13,7 @@ steps:
     displayName: "Terraform init"
     inputs:
       workingDirectory: $(System.DefaultWorkingDirectory)/drop/Terraform
-      backendServiceArm: TerraformConnection
+      backendServiceArm: TerraformConnection2
       backendAzureRmResourceGroupName: TeraformStuff
       backendAzureRmStorageAccountName: terraformstuffblob
       backendAzureRmContainerName: terraformstuffblobcontainer
