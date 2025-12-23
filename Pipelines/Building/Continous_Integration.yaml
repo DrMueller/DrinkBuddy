@@ -71,7 +71,7 @@ jobs:
       inputs:
         workingDirectory: $(TerraformPath)
         backendServiceArm: TerraformConnection2
-        backendAzureRmResourceGroupName: TeraformStuff
+        backendAzureRmResourceGroupName: TerraformStuff
         backendAzureRmStorageAccountName: terraformstuffblob
         backendAzureRmContainerName: terraformstuffblobcontainer
         backendAzureRmKey: tf/terraform.tfstate

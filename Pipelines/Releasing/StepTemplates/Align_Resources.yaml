@@ -14,7 +14,7 @@ steps:
     inputs:
       workingDirectory: $(System.DefaultWorkingDirectory)/drop/Terraform
       backendServiceArm: TerraformConnection2
-      backendAzureRmResourceGroupName: TeraformStuff
+      backendAzureRmResourceGroupName: TerraformStuff
       backendAzureRmStorageAccountName: terraformstuffblob
       backendAzureRmContainerName: terraformstuffblobcontainer
       backendAzureRmKey: tf/terraform.tfstate
