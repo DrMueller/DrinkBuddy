@@ -8,12 +8,7 @@ variable "subscription_id" {
   default = "91660754-3529-407f-8458-92759935fbf7"
 }
 
-variable "app_name" {
+variable "tenant_id" {
   type    = string
-  default = "$(AppName)"
-}
-
-variable "resource_group_name" {
-  type    = string
-  default = "matthias"
+  default = "d6fddda6-f690-4755-92c2-f22a3521bab0"
 }

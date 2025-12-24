@@ -24,4 +24,4 @@ steps:
     inputs:
       command: apply
       workingDirectory: $(System.DefaultWorkingDirectory)/drop/Terraform
-      environmentServiceNameAzureRM: TerraformConnection
+      environmentServiceNameAzureRM: TerraformConnection2
