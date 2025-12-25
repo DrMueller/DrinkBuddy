@@ -52,10 +52,8 @@ jobs:
 
       modifyOutputPath: false
 
-  - task: CmdLine@2
-    displayName: 'Install entity framework'
-    inputs:
-      script: 'dotnet tool install --global dotnet-ef'
+  - script: 'dotnet tool install --global dotnet-ef --version 9.0.10'
+    displayName: 'Install EF'
 
   - task: DotNetCoreCLI@2
     displayName: 'Create ef sql migration script'
