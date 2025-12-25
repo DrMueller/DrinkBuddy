@@ -61,7 +61,7 @@ jobs:
       command: custom
       custom: ef
       arguments: ' migrations script --configuration Release --output $(SqlOutputFile) --idempotent --context AppDbContext'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\Backend\Sources\Application'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\Sources\Application'
 
   - task: CopyFiles@2
     displayName: "Copy Terraform files"
