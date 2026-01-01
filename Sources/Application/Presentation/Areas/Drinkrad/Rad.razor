@@ -7,7 +7,6 @@
         </div>
     </MudPaper>
 
-    <!-- Legende -->
     <MudStack Spacing="1">
         @foreach (var segment in Segments)
         {
@@ -22,9 +21,4 @@
     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@IsSpinning" OnClick="SpinAsync">
         Drehen
     </MudButton>
-
-    @if (LastResult != null)
-    {
-        <WheelSegmentDisplay Segment="@LastResult"></WheelSegmentDisplay>
-    }
 </MudStack>

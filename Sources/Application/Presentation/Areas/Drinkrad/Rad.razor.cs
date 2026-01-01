@@ -1,26 +1,19 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DrinkBuddy.Presentation.Infrastructure.JavaScript.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using modan.AS4.Presentation.Infrastructure.JavaScript.Services;
 
 namespace DrinkBuddy.Presentation.Areas.Drinkrad
 {
     public partial class Rad
     {
-        private double _currentDeg; // "steht" danach
         private IJSObjectReference? _module;
-        private double _targetDeg; // absolutes Ziel
-
-        private bool IsSpinning { get; set; }
-
-        private int DurationMs { get; set; } = 3500;
+        private double _targetDeg;
 
         [Inject]
         public required IJavaScriptLocator JsLocator { get; set; }
 
         [Inject]
         public required IJSRuntime JsRuntime { get; set; }
-
-        public WheelSegment? LastResult { get; set; }
 
         [Parameter]
         public int MaxFullTurns { get; set; } = 7;
@@ -29,23 +22,15 @@ namespace DrinkBuddy.Presentation.Areas.Drinkrad
         public int MinFullTurns { get; set; } = 4;
 
         [Parameter]
-        public IReadOnlyList<WheelSegment> Segments { get; set; } =
-            new List<WheelSegment>
-            {
-                new("Rot", "#ef4444"),
-                new("Gelb", "#facc15"),
-                new("Gruen", "#22c55e"),
-                new("Blau", "#3b82f6"),
-                new("Orange", "#f97316"),
-                new("Lila", "#a855f7")
-            };
+        public required IReadOnlyCollection<WheelSegment> Segments { get; set; }
 
-        [Inject]
-        private IJSRuntime JS { get; set; } = default!;
+        private int DurationMs { get; } = 3500;
+
+        private bool IsSpinning { get; set; }
 
         private string WheelStyle => $@"
 background: {BuildConicGradient()};
-transform: rotate({_currentDeg}deg);
+
 --spin-to: {_targetDeg}deg;
 animation-duration: {DurationMs}ms;";
 
@@ -55,11 +40,6 @@ animation-duration: {DurationMs}ms;";
             {
                 await AssureJavascriptModuleAsync();
             }
-        }
-
-        private static double Mod(double x, double m)
-        {
-            return (x % m + m) % m;
         }
 
         private async Task AssureJavascriptModuleAsync()
@@ -78,36 +58,10 @@ animation-duration: {DurationMs}ms;";
             {
                 var from = i * step;
                 var to = (i + 1) * step;
-                parts.Add($"{Segments[i].Color} {from:0.###}deg {to:0.###}deg");
+                parts.Add($"{Segments.ElementAt(i).Color} {from:0.###}deg {to:0.###}deg");
             }
 
             return $"conic-gradient({string.Join(", ", parts)})";
-        }
-
-        private async Task PropagateResultAsync()
-        {
-            // Endposition "fixieren"
-            _currentDeg = _targetDeg % 360.0;
-
-            var n = Segments.Count;
-            var step = 360.0 / n;
-
-            var effective = Mod(90.0 - _currentDeg, 360.0);
-            var index = (int)Math.Floor(effective / step);
-            if (index < 0)
-            {
-                index = 0;
-            }
-
-            if (index >= n)
-            {
-                index = n - 1;
-            }
-
-            LastResult = Segments[index];
-            IsSpinning = false;
-
-            StateHasChanged();
         }
 
         private async Task SpinAsync()
@@ -118,22 +72,19 @@ animation-duration: {DurationMs}ms;";
             }
 
             IsSpinning = true;
-            LastResult = null;
             StateHasChanged();
-
-            // Starttick via Timer (JS) waehrend Animation
 
             var rnd = Random.Shared;
 
             var fullTurns = rnd.Next(MinFullTurns, MaxFullTurns + 1);
             var extra = rnd.NextDouble() * 360.0;
-            _targetDeg = _currentDeg + fullTurns * 360.0 + extra;
+            _targetDeg = fullTurns * 360.0 + extra;
 
             await _module!.InvokeVoidAsync("restartSpin");
             StateHasChanged();
 
-            await Task.Delay(DurationMs + 1000);
-            await PropagateResultAsync();
+            await Task.Delay(DurationMs + 500);
+            IsSpinning = false;
         }
 
         public record WheelSegment(string Label, string Color);

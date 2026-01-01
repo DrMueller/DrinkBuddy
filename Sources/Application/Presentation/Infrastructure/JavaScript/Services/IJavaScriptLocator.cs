@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace modan.AS4.Presentation.Infrastructure.JavaScript.Services
+namespace DrinkBuddy.Presentation.Infrastructure.JavaScript.Services
 {
     public interface IJavaScriptLocator
     {

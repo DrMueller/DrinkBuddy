@@ -1,7 +1,6 @@
 ﻿using DrinkBuddy.Common.Settings.Provisioning.Services;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
-using modan.AS4.Presentation.Infrastructure.JavaScript.Services;
 
 namespace DrinkBuddy.Presentation.Infrastructure.JavaScript.Services.Implementation
 {
