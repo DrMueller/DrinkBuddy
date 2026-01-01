@@ -1,0 +1,47 @@
+﻿
+.wheel-clip {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+
+.wheel {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 18px);
+    height: calc(100% - 18px);
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,.75);
+    overflow: hidden; /* hier hin */
+    will-change: transform;
+}
+
+.pointer {
+    position: absolute;
+    top: -14px; /* oberhalb */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 22px solid brown;
+}
+
+.wheel.spin {
+    animation-name: wheel-spin;
+    animation-timing-function: cubic-bezier(.12,.75,.1,1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes wheel-spin {
+    from {
+        transform: rotate(var(--from, 0deg));
+    }
+
+    to {
+        transform: rotate(var(--spin-to));
+    }
+}

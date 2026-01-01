@@ -1,0 +1,30 @@
+﻿@using MudBlazor
+<MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center">
+    <MudPaper Style="@("position: relative; overflow: visible; width:360px;height:360px;")">
+        <div class="pointer"></div>
+        <div class="wheel-clip">
+            <div class="wheel" style="@WheelStyle"></div>
+        </div>
+    </MudPaper>
+
+    <!-- Legende -->
+    <MudStack Spacing="1">
+        @foreach (var segment in Segments)
+        {
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                <WheelSegmentDisplay Segment="@segment"></WheelSegmentDisplay>
+            </MudStack>
+        }
+    </MudStack>
+</MudStack>
+
+<MudStack Row="true" Spacing="2" Class="mt-2">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@IsSpinning" OnClick="SpinAsync">
+        Drehen
+    </MudButton>
+
+    @if (LastResult != null)
+    {
+        <WheelSegmentDisplay Segment="@LastResult"></WheelSegmentDisplay>
+    }
+</MudStack>
