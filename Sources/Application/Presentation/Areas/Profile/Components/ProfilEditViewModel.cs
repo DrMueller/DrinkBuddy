@@ -8,7 +8,6 @@ namespace DrinkBuddy.Presentation.Areas.Profile.Components
         public string? Beschreibung { get; set; }
 
         [Required]
-        [MinLength(1)]
         public IList<string> FavorisierteDrinks { get; set; } = new List<string>();
 
         public int Id { get; init; }

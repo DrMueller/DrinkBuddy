@@ -13,7 +13,7 @@
                     <MudSelect @bind-Value="EditModel.SelectedProfil"
                                Variant="Variant.Filled"
                                FitContent="true"
-                               Clearable="true">
+                               Clearable="true" For="() => EditModel.SelectedProfil">
                         @foreach (var profil in Profile!)
                         {
                             <MudSelectItem T="Profil" Value="@profil">@profil.Name</MudSelectItem>
