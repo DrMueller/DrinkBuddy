@@ -1,0 +1,28 @@
+﻿@using DrinkBuddy.Presentation.Shared.Camera
+@using DrinkBuddy.Presentation.Shared.LoadingIndication
+@using MudBlazor
+@attribute [Route(Path)]
+
+<MudPaper Class="pa-4">
+    <MudCard>
+        <MudCardContent>
+            <MudSelect @bind-Value="SelectedSituation"
+                       Variant="Variant.Filled"
+                       FitContent="true"
+                       Class="mb-4"
+                       Clearable="false" For="() => SelectedSituation">
+                @foreach (var situation in FotoSituation.CreateAll())
+                {
+                    <MudSelectItem T="FotoSituation" Value="@situation">@situation.Name</MudSelectItem>
+                }
+            </MudSelect>
+
+            <Camera
+                OnPictureTaken="HandlePictureTakenAsync">
+            </Camera>
+        </MudCardContent>
+        <MudCardActions>
+            <LoadingButton IsLoading="IsCalculating" ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.LocalDrink" OnClick="SuggestDrinkAsync" Class="mx-2"/>
+        </MudCardActions>
+    </MudCard>
+</MudPaper>

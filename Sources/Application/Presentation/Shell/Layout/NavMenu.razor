@@ -1,10 +1,12 @@
 ﻿@using DrinkBuddy.Presentation.Areas.Drinkrad
 @using DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
+@using DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
 @using DrinkBuddy.Presentation.Areas.Profile.Components
 @using MudBlazor
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="@ProfileOverviewPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Approval">Profile</MudNavLink>
     <MudNavLink Href="@DrinkVorschlagPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LocalDrink">Drinks</MudNavLink>
+    <MudNavLink Href="@FotoDrinkVorschlagPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Camera">Foto Drinks</MudNavLink>
     <MudNavLink Href="@DrinkradPage.Path" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Circle">Rad</MudNavLink>
 </MudNavMenu>

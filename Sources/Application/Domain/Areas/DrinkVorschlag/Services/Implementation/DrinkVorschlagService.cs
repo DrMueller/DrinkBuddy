@@ -16,7 +16,7 @@ namespace DrinkBuddy.Domain.Areas.DrinkVorschlag.Services.Implementation
             var profil = await queryService.QuerySingleAsync(new ProfilSpec(profilId));
             var request = new DrinkRequest(profil, situation, spezialWuensche);
 
-            return await semKerClient.SendAsync(request);
+            return await semKerClient.SendDrinkRequestAsync(request);
         }
     }
 }
