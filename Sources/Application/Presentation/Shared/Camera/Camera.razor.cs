@@ -34,11 +34,8 @@ namespace DrinkBuddy.Presentation.Shared.Camera
             try
             {
                 _error = null;
-                var result = await _module!.InvokeAsync<CameraStartResult>("startCamera");
-                if (!result.Ok)
-                {
-                    _error = "Failed to start the camera." + result.ReadyState;
-                }
+
+                await _module!.InvokeVoidAsync("startCamera");
             }
             catch (Exception ex)
             {
@@ -51,13 +48,9 @@ namespace DrinkBuddy.Presentation.Shared.Camera
             try
             {
                 _error = null;
-                var result = await _module!.InvokeAsync<TakePictureResult>("takePicture");
-                _imageDataUrl = result.DataUrl;
 
-                if (!string.IsNullOrWhiteSpace(_imageDataUrl))
-                {
-                    await OnPictureTaken.InvokeAsync(_imageDataUrl);
-                }
+                var result = await _module!.InvokeAsync<string>("takePicture");
+                _imageDataUrl = result;
             }
             catch (Exception ex)
             {

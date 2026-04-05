@@ -17,6 +17,8 @@ namespace DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
         [Inject]
         public required IDrinkVorschlagService DrinkVorschlagService { get; set; }
 
+        public bool IsCalculating { get; set; }
+
         [Inject]
         public required IQueryService QueryService { get; set; }
 
@@ -25,7 +27,6 @@ namespace DrinkBuddy.Presentation.Areas.DrinkVorschlag.Components
         private bool IsLoading => Profile == null;
 
         private IReadOnlyCollection<Profil>? Profile { get; set; }
-        public bool IsCalculating { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

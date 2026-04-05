@@ -19,6 +19,8 @@ namespace DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
         [Inject]
         public required IFotoDrinkvorschlagService Service { get; set; }
 
+        private bool IsDisabled => string.IsNullOrEmpty(_bild);
+
         private FotoSituation SelectedSituation { get; set; } = FotoSituation.CreateAll().First();
 
         private Task HandlePictureTakenAsync(string arg)

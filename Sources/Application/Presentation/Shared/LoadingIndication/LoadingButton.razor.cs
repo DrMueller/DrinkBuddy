@@ -23,5 +23,9 @@ namespace DrinkBuddy.Presentation.Shared.LoadingIndication
 
         [Parameter]
         public required EventCallback OnClick { get; set; }
+
+        [Parameter]
+        [EditorRequired]
+        public bool IsDisabled { get; set; }
     }
 }
