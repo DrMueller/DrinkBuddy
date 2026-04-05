@@ -21,8 +21,7 @@ namespace DrinkBuddy.Presentation.Shared.Camera
                     return;
                 }
 
-                // 🔥 KRITISCH: zuerst verkleinern
-                var resized = await file.RequestImageFileAsync("image/jpeg", 1024, 1024);
+                var resized = await file.RequestImageFileAsync("image/jpeg", 512, 512);
 
                 await using var stream = resized.OpenReadStream(2_000_000);
                 using var ms = new MemoryStream();
@@ -30,7 +29,6 @@ namespace DrinkBuddy.Presentation.Shared.Camera
                 await stream.CopyToAsync(ms);
 
                 var base64 = Convert.ToBase64String(ms.ToArray());
-
                 _imageDataUrl = $"data:image/jpeg;base64,{base64}";
 
                 await OnPictureTaken.InvokeAsync(_imageDataUrl);

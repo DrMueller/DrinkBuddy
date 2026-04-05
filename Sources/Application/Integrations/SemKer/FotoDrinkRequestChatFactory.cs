@@ -5,7 +5,7 @@ namespace DrinkBuddy.Integrations.SemKer
 {
     public static class FotoDrinkRequestChatFactory
     {
-        private static readonly string _promot = @"
+        private static readonly string _prompt = @"
 You are an assistant that analyzes an image and a given situation.
 
 Your task:
@@ -51,7 +51,7 @@ Input:
 
         internal static ChatMessage Create(string bild, FotoSituation situation)
         {
-            var prompt = _promot.Replace("{situation}", situation.Description);
+            var prompt = _prompt.Replace("{situation}", situation.Description);
 
             var message = new UserChatMessage(
                 ChatMessageContentPart.CreateTextPart(prompt),
