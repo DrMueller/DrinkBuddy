@@ -12,9 +12,13 @@ namespace DrinkBuddy.Presentation.Shared.Camera
 
         private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
         {
-            var file = e.File;
+            var file = e.GetMultipleFiles(1).FirstOrDefault();
+            if (file == null)
+            {
+                return;
+            }
 
-            using var stream = file.OpenReadStream(10_000_000);
+            await using var stream = file.OpenReadStream(5_000_000); // 🔥 Limit kleiner!
             using var ms = new MemoryStream();
 
             await stream.CopyToAsync(ms);
@@ -22,6 +26,7 @@ namespace DrinkBuddy.Presentation.Shared.Camera
             var base64 = Convert.ToBase64String(ms.ToArray());
 
             _imageDataUrl = $"data:{file.ContentType};base64,{base64}";
+
             await OnPictureTaken.InvokeAsync(_imageDataUrl);
         }
     }

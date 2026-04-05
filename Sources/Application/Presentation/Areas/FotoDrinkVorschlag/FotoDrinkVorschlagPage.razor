@@ -3,14 +3,6 @@
 @using MudBlazor
 @attribute [Route(Path)]
 
-<video autoplay playsinline muted id="v"></video>
-
-<script>
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(s => v.srcObject = s)
-      .catch(e => console.error(e));
-</script>
-
 <MudPaper Class="pa-4">
     <MudCard>
         <MudCardContent>

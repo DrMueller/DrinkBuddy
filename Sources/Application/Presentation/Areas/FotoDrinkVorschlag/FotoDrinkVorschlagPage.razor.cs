@@ -26,6 +26,7 @@ namespace DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
         private Task HandlePictureTakenAsync(string arg)
         {
             _bild = arg;
+            StateHasChanged();
             return Task.CompletedTask;
         }
 
