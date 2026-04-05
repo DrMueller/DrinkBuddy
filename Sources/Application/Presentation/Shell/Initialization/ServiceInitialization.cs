@@ -15,7 +15,11 @@ namespace DrinkBuddy.Presentation.Shell.Initialization
             services.Configure<AppSettings>(Program.Configuration.GetSection(AppSettings.SectionKey));
 
             services.AddRazorComponents()
-                .AddInteractiveServerComponents();
+                .AddInteractiveServerComponents()
+                .AddHubOptions(opt =>
+                {
+                    opt.DisableImplicitFromServicesParameters = true; // Required for the file upload, see https://github.com/dotnet/aspnetcore/issues/38842
+                });
 
             services.AddCors();
             services.AddAntiforgery();
