@@ -1,6 +1,5 @@
 ﻿using DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
+using OpenAI.Chat;
 
 namespace DrinkBuddy.Integrations.SemKer
 {
@@ -48,25 +47,19 @@ Exact output structure:
 Input:
 - Situation: {situation}
 ";
+#pragma warning disable OPENAI001
 
-        internal static ChatHistory Create(string bild, FotoSituation situation)
+        internal static ChatMessage Create(string bild, FotoSituation situation)
         {
-            var image = new ImageContent
-            {
-                DataUri = bild
-            };
-
             var prompt = _promot.Replace("{situation}", situation.Description);
 
-            var history = new ChatHistory();
-            history.AddSystemMessage(_promot);
-            history.AddUserMessage(
-            [
-                new TextContent(prompt),
-                image
-            ]);
+            var message = new UserChatMessage(
+                ChatMessageContentPart.CreateTextPart(prompt),
+                ChatMessageContentPart.CreateImagePart(new Uri(bild))
+            );
 
-            return history;
+            return message;
         }
     }
 }
+#pragma warning restore OPENAI001
