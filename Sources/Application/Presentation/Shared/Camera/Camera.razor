@@ -1,6 +1,15 @@
 ﻿@using MudBlazor
-<div class="container-fluid">
-    <div class="row">
+@* <div class="container-fluid"> *@
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <MudAlert Severity="Severity.Error">@_error</MudAlert>
+    }
+
+    <video id="videoElement" autoplay playsinline muted style="width:100%; max-width:600px;"></video>
+    <canvas id="canvasElement" style="display:none;"></canvas>
+
+@*     <div class="row">
         <div class="col">
             <video id="videoElement" autoplay playsinline muted style="width:100%; max-width:600px;"></video>
         </div>
@@ -10,7 +19,7 @@
         <div class="col">
             <canvas id="canvasElement" style="display:none;"></canvas>
         </div>
-    </div>
+    </div> *@
 
     <div class="row mt-2">
         <div class="col d-flex gap-2">
@@ -32,4 +41,4 @@
             </div>
         </div>
     }
-</div>
+@* </div> *@

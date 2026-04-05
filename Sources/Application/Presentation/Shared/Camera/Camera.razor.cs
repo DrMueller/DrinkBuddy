@@ -1,4 +1,5 @@
 ﻿using DrinkBuddy.Presentation.Infrastructure.JavaScript.Services;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -6,8 +7,9 @@ namespace DrinkBuddy.Presentation.Shared.Camera
 {
     public partial class Camera
     {
-        private IJSObjectReference? _module;
+        private string? _error;
         private string? _imageDataUrl;
+        private IJSObjectReference? _module;
 
         [Inject]
         public required IJSRuntime JsRuntime { get; set; }
@@ -29,17 +31,58 @@ namespace DrinkBuddy.Presentation.Shared.Camera
 
         private async Task StartCameraAsync()
         {
-            await _module!.InvokeVoidAsync("startCamera");
+            try
+            {
+                _error = null;
+                var result = await _module!.InvokeAsync<CameraStartResult>("startCamera");
+                if (!result.Ok)
+                {
+                    _error = "Failed to start the camera." + result.ReadyState;
+                }
+            }
+            catch (Exception ex)
+            {
+                _error = ex.Message;
+            }
         }
 
         private async Task TakePictureAsync()
         {
-            _imageDataUrl = await _module!.InvokeAsync<string>("takePicture");
-
-            if (!string.IsNullOrWhiteSpace(_imageDataUrl))
+            try
             {
-                await OnPictureTaken.InvokeAsync(_imageDataUrl);
+                _error = null;
+                var result = await _module!.InvokeAsync<TakePictureResult>("takePicture");
+                _imageDataUrl = result.DataUrl;
+
+                if (!string.IsNullOrWhiteSpace(_imageDataUrl))
+                {
+                    await OnPictureTaken.InvokeAsync(_imageDataUrl);
+                }
             }
+            catch (Exception ex)
+            {
+                _error = ex.Message;
+            }
+        }
+
+        [PublicAPI]
+        public class CameraStartResult
+        {
+            public int Height { get; set; }
+            public bool Ok { get; set; }
+            public int ReadyState { get; set; }
+            public int Width { get; set; }
+        }
+
+        [PublicAPI]
+        public class TakePictureResult
+        {
+            public string DataUrl { get; set; } = "";
+            public int Height { get; set; }
+            public int ReadyState { get; set; }
+            public int VideoHeight { get; set; }
+            public int VideoWidth { get; set; }
+            public int Width { get; set; }
         }
     }
 }
