@@ -1,81 +1,28 @@
-﻿using DrinkBuddy.Presentation.Infrastructure.JavaScript.Services;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace DrinkBuddy.Presentation.Shared.Camera
 {
     public partial class Camera
     {
-        private string? _error;
         private string? _imageDataUrl;
-        private IJSObjectReference? _module;
-
-        [Inject]
-        public required IJSRuntime JsRuntime { get; set; }
 
         [Parameter]
         public required EventCallback<string> OnPictureTaken { get; set; }
 
-        [Inject]
-        private IJavaScriptLocator JsLocator { get; set; } = default!;
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
         {
-            if (firstRender)
-            {
-                var jsFilePath = await JsLocator.LocateJsFilePathAsync(this);
-                _module ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", jsFilePath);
-            }
-        }
+            var file = e.File;
 
-        private async Task StartCameraAsync()
-        {
-            try
-            {
-                _error = null;
+            using var stream = file.OpenReadStream(10_000_000);
+            using var ms = new MemoryStream();
 
-                await _module!.InvokeVoidAsync("startCamera");
-            }
-            catch (Exception ex)
-            {
-                _error = ex.Message;
-            }
-        }
+            await stream.CopyToAsync(ms);
 
-        private async Task TakePictureAsync()
-        {
-            try
-            {
-                _error = null;
+            var base64 = Convert.ToBase64String(ms.ToArray());
 
-                var result = await _module!.InvokeAsync<string>("takePicture");
-                _imageDataUrl = result;
-            }
-            catch (Exception ex)
-            {
-                _error = ex.Message;
-            }
-        }
-
-        [PublicAPI]
-        public class CameraStartResult
-        {
-            public int Height { get; set; }
-            public bool Ok { get; set; }
-            public int ReadyState { get; set; }
-            public int Width { get; set; }
-        }
-
-        [PublicAPI]
-        public class TakePictureResult
-        {
-            public string DataUrl { get; set; } = "";
-            public int Height { get; set; }
-            public int ReadyState { get; set; }
-            public int VideoHeight { get; set; }
-            public int VideoWidth { get; set; }
-            public int Width { get; set; }
+            _imageDataUrl = $"data:{file.ContentType};base64,{base64}";
+            await OnPictureTaken.InvokeAsync(_imageDataUrl);
         }
     }
 }
