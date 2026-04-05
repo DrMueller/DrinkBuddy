@@ -7,10 +7,27 @@ export async function startCamera() {
     }
 
     const video = document.getElementById("videoElement");
+    if (!video) return;
 
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("autoplay", "true");
+    video.muted = true;
+
+    stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }
+    });
 
     video.srcObject = stream;
+
+    await new Promise(resolve => {
+        if (video.readyState >= 1) {
+            resolve();
+            return;
+        }
+
+        video.onloadedmetadata = () => resolve();
+    });
+
     await video.play();
 }
 
@@ -20,16 +37,17 @@ export async function takePicture() {
 
     if (!video || !canvas) return '';
 
-    // warten bis ready
-    if (video.readyState < 2) {
-        await new Promise(r => video.onloadeddata = r);
+    if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
+        await new Promise(resolve => {
+            video.onloadedmetadata = () => resolve();
+        });
     }
 
     const MAX_WIDTH = 512;
     const scale = Math.min(1, MAX_WIDTH / video.videoWidth);
 
-    canvas.width = video.videoWidth * scale;
-    canvas.height = video.videoHeight * scale;
+    canvas.width = Math.round(video.videoWidth * scale);
+    canvas.height = Math.round(video.videoHeight * scale);
 
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
