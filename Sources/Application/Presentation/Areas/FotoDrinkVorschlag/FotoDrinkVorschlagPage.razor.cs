@@ -9,7 +9,7 @@ namespace DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
     {
         public const string Path = "/fotodrinkvorschlag";
 
-        private string? _bild;
+        private byte[]? _bild;
 
         [Inject]
         public required IDialogService DialogService { get; set; }
@@ -19,11 +19,11 @@ namespace DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
         [Inject]
         public required IFotoDrinkvorschlagService Service { get; set; }
 
-        private bool IsDisabled => string.IsNullOrEmpty(_bild);
+        private bool IsDisabled => _bild == null || IsCalculating;
 
         private FotoSituation SelectedSituation { get; set; } = FotoSituation.CreateAll().First();
 
-        private Task HandlePictureTakenAsync(string arg)
+        private Task HandlePictureTakenAsync(byte[] arg)
         {
             _bild = arg;
             StateHasChanged();
@@ -32,7 +32,7 @@ namespace DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag
 
         private async Task SuggestDrinkAsync()
         {
-            if (string.IsNullOrEmpty(_bild))
+            if (_bild == null)
             {
                 return;
             }

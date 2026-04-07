@@ -1,7 +1,7 @@
 ﻿using DrinkBuddy.Domain.Areas.DrinkVorschlag.Models;
 using OpenAI.Chat;
 
-namespace DrinkBuddy.Integrations.SemKer
+namespace DrinkBuddy.Integrations.AzureOpenAi
 {
     internal static class DrinkRequestChatFactory
     {

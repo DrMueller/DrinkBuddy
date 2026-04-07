@@ -1,13 +1,13 @@
-﻿using DrinkBuddy.Domain.Integrations.SemKer;
+﻿using DrinkBuddy.Domain.Integrations.AzureOpenAi;
 using DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag;
 
 namespace DrinkBuddy.Domain.Areas.FotoDrinkvorschlag.Services.Implementation
 {
-    public class FotoDrinkvorschlagService(ISemKerClient semKerClient) : IFotoDrinkvorschlagService
+    public class FotoDrinkvorschlagService(IAzureOpenAiClient azureOpenAiClient) : IFotoDrinkvorschlagService
     {
-        public async Task<string> CreateVorschlagAsync(FotoSituation situation, string bild)
+        public async Task<string> CreateVorschlagAsync(FotoSituation situation, byte[] bild)
         {
-            return await semKerClient.SendFotoDrinkRequestAsync(bild, situation);
+            return await azureOpenAiClient.SendFotoDrinkRequestAsync(bild, situation);
         }
     }
 }

@@ -3,15 +3,15 @@ using Azure;
 using Azure.AI.OpenAI;
 using DrinkBuddy.Common.Settings.Provisioning.Services;
 using DrinkBuddy.Domain.Areas.DrinkVorschlag.Models;
-using DrinkBuddy.Domain.Integrations.SemKer;
+using DrinkBuddy.Domain.Integrations.AzureOpenAi;
 using DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag;
 using JetBrains.Annotations;
 using OpenAI.Chat;
 
-namespace DrinkBuddy.Integrations.SemKer
+namespace DrinkBuddy.Integrations.AzureOpenAi
 {
     [UsedImplicitly]
-    public class SemKerClient(ISettingsProvider settingsProvider) : ISemKerClient
+    public class AzureOpenAiClient(ISettingsProvider settingsProvider) : IAzureOpenAiClient
     {
         public async Task<string> SendDrinkRequestAsync(DrinkRequest request)
         {
@@ -19,7 +19,7 @@ namespace DrinkBuddy.Integrations.SemKer
             return await SendAsync(message);
         }
 
-        public async Task<string> SendFotoDrinkRequestAsync(string bild, FotoSituation situation)
+        public async Task<string> SendFotoDrinkRequestAsync(byte[] bild, FotoSituation situation)
         {
             var message = FotoDrinkRequestChatFactory.Create(bild, situation);
             return await SendAsync(message);

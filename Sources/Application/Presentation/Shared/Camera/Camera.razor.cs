@@ -9,7 +9,7 @@ namespace DrinkBuddy.Presentation.Shared.Camera
         private string? _imageDataUrl;
 
         [Parameter]
-        public required EventCallback<string> OnPictureTaken { get; set; }
+        public required EventCallback<byte[]> OnPictureTaken { get; set; }
 
         private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
         {
@@ -30,8 +30,9 @@ namespace DrinkBuddy.Presentation.Shared.Camera
 
                 var base64 = Convert.ToBase64String(ms.ToArray());
                 _imageDataUrl = $"data:image/jpeg;base64,{base64}";
+                var imageBytes = ms.ToArray();
 
-                await OnPictureTaken.InvokeAsync(_imageDataUrl);
+                await OnPictureTaken.InvokeAsync(imageBytes);
             }
             catch (Exception ex)
             {

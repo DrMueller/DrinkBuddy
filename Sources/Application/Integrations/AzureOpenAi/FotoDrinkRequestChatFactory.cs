@@ -1,7 +1,7 @@
 ﻿using DrinkBuddy.Presentation.Areas.FotoDrinkVorschlag;
 using OpenAI.Chat;
 
-namespace DrinkBuddy.Integrations.SemKer
+namespace DrinkBuddy.Integrations.AzureOpenAi
 {
     public static class FotoDrinkRequestChatFactory
     {
@@ -49,13 +49,13 @@ Input:
 ";
 #pragma warning disable OPENAI001
 
-        internal static ChatMessage Create(string bild, FotoSituation situation)
+        internal static ChatMessage Create(byte[] bild, FotoSituation situation)
         {
             var prompt = _prompt.Replace("{situation}", situation.Description);
 
             var message = new UserChatMessage(
                 ChatMessageContentPart.CreateTextPart(prompt),
-                ChatMessageContentPart.CreateImagePart(new Uri(bild))
+                ChatMessageContentPart.CreateImagePart(new BinaryData(bild), "image/jpeg")
             );
 
             return message;
